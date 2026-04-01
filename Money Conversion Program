@@ -1,0 +1,93 @@
+
+//Hello! My name is Chandler Isma, this is Programming Assignment 1, and I will be making a program that uses a menu to decide whether you want to compute your change into x.xx form, or turn x.xx into coins!
+//COP 3014, 6/1/23
+#include <iostream>
+using namespace std;
+
+const int QUARTER = 25;
+const int DIME = 10;
+const int NICKEL = 5;
+const int PENNY = 1;
+
+void coinstomoney(int quarters, int dimes, int nickels, int pennies) {
+    int change, dollars, cents;
+    if(quarters > 0 && dimes > 0 && nickels > 0 && pennies > 0){
+
+        change = (quarters * QUARTER) + (dimes * DIME) + (nickels * NICKEL) + (pennies * PENNY);
+        dollars = change / 100;
+        cents = change % 100;
+
+        cout.setf(ios::fixed);
+        cout.precision(2);
+
+        cout << "The amount the program computed is..." << " " << "$" << dollars << "." << cents << endl;
+    }
+
+    else {
+        cout << "Invalid value! Input a positive value or a non decimal please!\n";
+    }
+}
+
+
+void moneytocoins(double change) {
+    int quarters, dimes, nickels, pennies;
+    int cents;
+
+    if (change > 0) {
+        cents = change * 100;
+        quarters = cents / QUARTER;
+        cents = cents % QUARTER;
+        dimes = cents / DIME;
+        cents = cents % DIME;
+        nickels = cents / NICKEL;
+        cents = cents % NICKEL;
+        pennies = cents / PENNY;
+        cout << "The amount of change you entered is..." << " " << "$" << change << endl;
+        cout << "The amount of quarters you have is..." << " " << quarters << endl;
+        cout << "The amount of dimes you have is..." << " " << dimes << endl;
+        cout << "The amount of nickels you have is..." << " " << nickels << endl;
+        cout << "The amount of pennies you have is..." << " " << pennies << endl;
+    }
+    else {
+        cout << "Invalid value! Enter a positive value please!\n";
+
+    }
+}
+
+int main() {
+    int quarters, dimes, nickels, pennies, choice;
+    double change;
+    cout << "Enter 1 to compute your coins into dollars and some change, Enter 2 to break down any money you have into coins, or Enter 3 and end the program!\n";
+    cin >> choice;
+
+    switch (choice) {
+    case 1:
+        cout << "Enter the change here so this program can compute the amount of money you have!\n";
+        cout << "Enter the quarters here!\n";
+        cin >> quarters;
+        cout << "Enter the dimes here!\n";
+        cin >> dimes;
+        cout << "Enter the nickels here!\n";
+        cin >> nickels;
+        cout << "Enter the pennies here!\n";
+        cin >> pennies;
+        coinstomoney(quarters, dimes, nickels, pennies);
+        break;
+    case 2:
+        cout << "Hello! This is a coin dispenser Program!\n";
+        cout << "Enter the amount of change here in a \"x.xx\" format!\n";
+        cin >> change;
+        moneytocoins(change);
+        break;
+    case 3:
+        cout << "End of program!\n";
+        break;
+    default:
+        cout << "Not a eligible choice, please pick 1 or 2!\n";
+
+        return 0;
+    }
+
+
+    return 0;
+}
