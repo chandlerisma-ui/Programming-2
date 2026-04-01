@@ -1,0 +1,14 @@
+# Programming 2 — COP 3014
+
+A collection of assignments from the Programming 2 course at Florida Atlantic University.
+Projects focus on building a stronger foundation in C++ through object-oriented design
+and classic computer science algorithms.
+
+## Topics Covered
+- Object-Oriented Programming (classes, inheritance, polymorphism)
+- Recursion
+- Sorting algorithms (bubble, merge, quick sort, etc.)
+- Searching algorithms (binary search, linear search)
+
+## Languages
+- C++
