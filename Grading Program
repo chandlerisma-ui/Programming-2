@@ -1,0 +1,188 @@
+//Hello, my name is Chandler Isma! This is Assignment 3, and I will be making a grading Program!
+
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class COP3014 {
+private:
+    string firstName;
+    string lastName;
+    string zNumber;
+    int grades[5];
+    float totalGrade;
+    char finalLetterGrade;
+
+public:
+    COP3014() {
+        firstName = "";
+        lastName = "";
+        zNumber = "";
+        totalGrade = 0.0;
+        finalLetterGrade = 'F';
+    }
+
+    COP3014(string first, string last, string zNum, int* gradesArr) {
+        firstName = first;
+        lastName = last;
+        zNumber = zNum;
+        for (int i = 0; i < 5; i++) {
+            grades[i] = gradesArr[i];
+        }
+    }
+
+    void setFirstName(string first) {
+        firstName = first;
+    }
+
+    void setLastName(string last) {
+        lastName = last;
+    }
+
+    void setZNumber(string zNum) {
+        zNumber = zNum;
+    }
+
+    void setGrades(int* gradesArr) {
+        for (int i = 0; i < 5; i++) {
+            grades[i] = gradesArr[i];
+        }
+    }
+
+    string getFirstName() const {
+        return firstName;
+    }
+
+    string getLastName() const {
+        return lastName;
+    }
+
+    string getZNumber() const {
+        return zNumber;
+    }
+
+    int* getGrades() {
+        return grades;
+    }
+
+    void input() {
+        cout << "Enter the student's first name here!: ";
+        cin >> firstName;
+        cout << "Enter the student's last name here!: ";
+        cin >> lastName;
+        cout << "Enter the student's Z-number here!: ";
+        cin >> zNumber;
+        cout << "Enter grades for each assignment (5 grades in total):\n";
+        for (int i = 0; i < 5; i++) {
+            cout << "Grade " << i + 1 << ": ";
+            cin >> grades[i];
+        }
+    }
+
+    void computeTotalGrade() {
+        float quizAvg = (grades[0] + grades[1] + grades[2]) / 3.0;
+        float midtermGrade = grades[3] * 0.3;
+        float finalGrade = grades[4] * 0.5;
+        totalGrade = quizAvg + midtermGrade + finalGrade;
+    }
+
+    void computeFinalLetterGrade() {
+        if (totalGrade >= 90)
+            finalLetterGrade = 'A';
+        else if (totalGrade >= 80)
+            finalLetterGrade = 'B';
+        else if (totalGrade >= 70)
+            finalLetterGrade = 'C';
+        else if (totalGrade >= 60)
+            finalLetterGrade = 'D';
+        else
+            finalLetterGrade = 'F';
+    }
+
+    void output() {
+        cout << "Student Name: " << firstName << " " << lastName << endl;
+        cout << "Z-number: " << zNumber << endl;
+        cout << "Grades:\n";
+        cout << "Quiz 1: " << grades[0] << endl;
+        cout << "Quiz 2: " << grades[1] << endl;
+        cout << "Quiz 3: " << grades[2] << endl;
+        cout << "Midterm: " << grades[3] << endl;
+        cout << "Final: " << grades[4] << endl;
+        cout << "Total Grade: " << totalGrade << endl;
+        cout << "Final Letter Grade: " << finalLetterGrade << endl;
+    }
+};
+
+class Summer23 : public COP3014 {
+private:
+    float bonus;
+
+public:
+    Summer23() : COP3014() {
+        bonus = 0.0;
+    }
+
+    Summer23(string first, string last, string zNum, int* gradesArr, float bonusAmount)
+        : COP3014(first, last, zNum, gradesArr) {
+        bonus = bonusAmount;
+    }
+
+    void setBonus(float bonusAmount) {
+        bonus = bonusAmount;
+    }
+
+    float getBonus() const {
+        return bonus;
+    }
+
+    void input() {
+        COP3014::input();
+        cout << "Enter the bonus accumulated here!: ";
+        cin >> bonus;
+    }
+
+    void output() {
+        COP3014::output();
+        cout << "Bonus: " << bonus << "%" << endl;
+    }
+
+    void addBonusToFinalGrade() {
+        float bonusPercentage = bonus / 100.0;
+        float bonusAmount = COP3014::getGrades()[4] * bonusPercentage;
+        COP3014::setGrades(COP3014::getGrades());
+        COP3014::getGrades()[4] += bonusAmount;
+        COP3014::computeTotalGrade();
+        COP3014::computeFinalLetterGrade();
+    }
+};
+
+int main() {
+    // Test cases
+    int grades1[] = { 20, 20, 10, 0, 90 };
+    Summer23 student1("Frank", "Fabulous", "Z12345678", grades1, 2);
+
+    int grades2[] = { 20, 20, 20, 98, 95 };
+    Summer23 student2("Gina", "Genius", "Z98765432", grades2, 3);
+
+    student1.computeTotalGrade();
+    student1.computeFinalLetterGrade();
+    student2.computeTotalGrade();
+    student2.computeFinalLetterGrade();
+
+    student1.output();
+    cout << endl;
+    student2.output();
+    cout << endl;
+
+    student1.addBonusToFinalGrade();
+    student2.addBonusToFinalGrade();
+
+    student1.output();
+    cout << endl;
+    student2.output();
+    cout << endl;
+
+    return 0;
+}
