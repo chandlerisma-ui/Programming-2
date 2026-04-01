@@ -1,0 +1,82 @@
+//Hello, My name is Chandler Isma, and this is Assignment 2! I will be making a loan calcualtor that can calculate total payments and interest for you!
+
+
+
+#include <iostream>
+#include <fstream> 
+#include <cstdlib>
+#include <iomanip>
+
+using namespace std;
+
+double amortization(double P, double r, int n)
+{
+    return P * (r * pow(1 + r, n)) / (pow(1 + r, n) - 1);
+}
+
+void interestPrincipal(double M, double P, double r, int n, double& interest, double& principal, double& balance)
+{
+    interest = P * r;
+    principal = M - interest;
+    balance = P - principal;
+}
+
+void totalPaymentInterest(double M, double& totalPayment, double& totalInterest, double& interest)
+{
+    totalPayment += M;
+    totalInterest += M - (M - interest);
+}
+
+void inputValues(double& P, double& r, int& n)
+{
+    cout << "Enter the loan amount: ";
+    cin >> P;
+    cout << "Enter the interest rate (as a decimal): ";
+    cin >> r;
+    cout << "Enter the loan term in months: ";
+    cin >> n;
+}
+
+void outputResults(double M, double P, double r, int n, char c, double interest, double principal, double balance, double totalPayment, double totalInterest)
+{
+    {
+        ofstream outputFile("loancalc.txt");
+
+        cout << "Month\tPayment\tInterest\tPrincipal\tBalance" << endl;
+        outputFile << "Month\tPayment\tInterest\tPrincipal\tBalance" << endl;
+
+        for (int i = 1; i <= n; i++)
+        {
+            cout << i << "\t" << M << "\t" << interest << "\t" << principal << "\t" << balance << endl;
+            outputFile << i << "\t" << M << "\t" << interest << "\t" << principal << "\t" << balance << endl;
+
+            interestPrincipal(M, balance, r, n, interest, principal, balance);
+            totalPaymentInterest(M, totalPayment, totalInterest, interest);
+        }
+
+        cout << "The payment totals come out to...: $" << totalPayment << endl;
+        cout << "The total interest comes out to...: $" << totalInterest << endl;
+        outputFile << "The payment totals come out to...: $" << totalPayment << endl;
+        outputFile << "The total interest comes out to...: $" << totalInterest << endl;
+        cout << "If you want to repeat the process again press Q!" << endl;
+        cin >> c;
+        outputFile.close();
+
+    } while (c == 'q' || c == 'Q');
+
+}
+
+
+int main()
+{
+    double P, r, M, interest, principal, balance, totalPayment = 0, totalInterest = 0;
+    int n;
+    char c = 'c';
+
+        inputValues(P, r, n);
+        M = amortization(P, r / 12, n);
+        interestPrincipal(M, P, r / 12, n, interest, principal, balance);
+        outputResults(M, P, r, n, c, interest, principal, balance, totalPayment, totalInterest);
+
+    return 0;
+}
